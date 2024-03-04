@@ -18,6 +18,7 @@
   "author": "Oleg Mihailik",
   "license": "not yet",
   "devDependencies": {
+    "coldsky": "*",
     "@atproto/api": "0.10.4",
     "@ipld/car": "^5.2.6",
     "cbor-x": "^1.5.8",

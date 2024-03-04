@@ -1,19 +1,46 @@
 // @ts-check
 /// <reference types="@atproto/api" />
-/// <reference types="coldsky" />
+
+import { BskyAgent } from "@atproto/api";
 
 async function dms() {
   console.log('init');
-  const dependenciesLoaded = new Promise(resolve => {
-    dms.dependenciesLoaded = () => {
-      console.log('dependencies loaded OK.');
-      resolve();
-    };
-  });
 
   console.log('wait for auth');
   // https://bsky.app/settings/app-passwords
   const atClient = await getAuthenticatedBsky();
+  console.log(window.atClient = atClient);
+
+  const profile = await atClient.getProfile({
+    actor: atClient.session?.did
+  });
+  console.log('profile', profile.data);
+  const pre = document.createElement('pre');
+  pre.textContent = JSON.stringify(profile.data, null, 2);
+  document.body.appendChild(pre);
+
+  await atClient.upsertProfile(profile => {
+    const updatedProfile = {
+      ...profile,
+      labels: {
+        $type: 'com.atproto.label.defs#selfLabels',
+        ...profile?.labels,
+        values: [
+          {
+            macro: 'XLS',
+            val: 'predefine$XLS'
+          },
+          {
+            macro: 'XLSX',
+            val: 'predefine$XLSX'
+          }
+        ]
+      }
+    };
+    return updatedProfile;
+  });
+
+  console.log('done');
 
   async function getAuthenticatedBsky() {
     let loginForm;
@@ -24,16 +51,24 @@ async function dms() {
         auth = await loginForm.login();
       }
 
-      await dependenciesLoaded;
+      const oldXrpc = 'https://bsky.social/xrpc';
+      const newXrpc = 'https://bsky.network/xrpc';
+      const publicXrpc = 'https://public.api.bsky.app/xrpc';
 
-      const atClient = coldsky.ColdskyAgent({ server: 'bsky.social' });
+      const atClient = new BskyAgent({ service: oldXrpc });
       try {
         await atClient.login({ identifier: auth.username, password: auth.password });
+        saveAuthToLocalStorage(auth);
         return atClient;
       } catch (error) {
         console.warn('AUTH ', error);
         loginForm?.showError(error.message || String(error));
       }
+    }
+
+
+    function saveAuthToLocalStorage(auth) {
+      localStorage.setItem('AUTH', JSON.stringify(auth));
     }
 
     function getLocalStorageAuth() {
