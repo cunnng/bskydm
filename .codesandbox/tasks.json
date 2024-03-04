@@ -2,11 +2,20 @@
   // These tasks will run in order when initializing your CodeSandbox project.
   "setupTasks": [
     {
-      "name": "Running containers",
-      "command": "CSB_RUN_OUTSIDE_CONTAINER=1 /usr/bin/pitcher containers up --workspace /project/bskydm",
-      "unconfigured": true
+      "name": "npm install",
+      "command": "npm install"
     }
   ],
+
   // These tasks can be run from CodeSandbox. Running one will open a log in the app.
-  "tasks": {}
+  "tasks": {
+    "npm start": {
+      "name": "npm start",
+      "command": "npm start",
+      "runAtStart": true,
+      "preview": {
+        "port": 8000
+      }
+    }
+  }
 }

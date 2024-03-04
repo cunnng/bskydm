@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "build": "node src./build.js",
-    "watch": "node src./build.js --watch",
-    "start": "node src./build.js --serve",
+    "watch": "node src/build.js --watch",
+    "start": "node src/build.js --serve",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
