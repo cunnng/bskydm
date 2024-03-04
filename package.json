@@ -1,0 +1,27 @@
+{
+  "name": "bskydm",
+  "version": "0.1.0",
+  "description": "BlueSky DMs",
+  "main": "index.js",
+  "scripts": {
+    "build": "node src./build.js",
+    "watch": "node src./build.js --watch",
+    "start": "node src./build.js --serve",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "bluesky",
+    "coldsky",
+    "atproto",
+    "social media"
+  ],
+  "author": "Oleg Mihailik",
+  "license": "not yet",
+  "devDependencies": {
+    "@atproto/api": "0.10.4",
+    "@ipld/car": "^5.2.6",
+    "cbor-x": "^1.5.8",
+    "esbuild": "^0.20.0",
+    "multiformats": "^13.0.1"
+  }
+}
